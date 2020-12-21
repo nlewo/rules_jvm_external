@@ -658,7 +658,6 @@ def make_coursier_dep_tree(
         # https://github.com/coursier/coursier/blob/1cbbf39b88ee88944a8d892789680cdb15be4714/modules/paths/src/main/java/coursier/paths/CoursierPaths.java#L29-L56
         environment = {"COURSIER_CACHE": str(repository_ctx.path(coursier_cache_location))}
 
-    coursier_credentials = []
     netrc_file = get_home_netrc_filename(repository_ctx)
     if netrc_file != None:
         parsed_netrc = read_netrc(repository_ctx, netrc_file)
@@ -1033,6 +1032,7 @@ pinned_coursier_fetch = repository_rule(
         "additional_netrc_lines": attr.string_list(doc = "Additional lines prepended to the netrc file used by `http_file` (with `maven_install_json` only).", default = []),
     },
     implementation = _pinned_coursier_fetch_impl,
+    local = True,
 )
 
 coursier_fetch = repository_rule(
@@ -1088,4 +1088,5 @@ coursier_fetch = repository_rule(
         "RJE_VERBOSE",
     ],
     implementation = _coursier_fetch_impl,
+    local = True,
 )
